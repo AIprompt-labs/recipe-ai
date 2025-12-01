@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>社内向けマニュアルを自動生成するプロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- ここはトップページと同じ Tailwind の読み込みに合わせてください -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <header class="border-b bg-white">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+      <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">文章生成</span></span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <!-- 広告枠 -->
+    <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm text-gray-600">
+      広告枠（ここにA8やバリューコマースのタグを後から貼り付け）
+    </div>
+
+    <!-- レシピ本体 -->
+    <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+      <header class="space-y-2">
+        <p class="text-xs text-gray-500">レシピID: manual-0001</p>
+        <h1 class="text-2xl font-bold">【テンプレ】タイトルをここに</h1>
+        <p class="text-sm text-gray-600">② 目的：業務マニュアルや操作手順書を、漏れなく・分かりやすく・統一フォーマットで自動生成する。</p>
+      </header>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">③{マニュアルの対象業務・ツール名}
+
+{想定読者（例: 新入社員・アルバイト・社外パートナーなど）}
+
+{マニュアルの目的（何ができるようになれば良いか）}
+
+{使用環境・前提条件}
+
+{ステップの数や粒度の希望}
+
+{文体（ですます調 / フランク / 固め など）}</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>例）{対象読者}</li>
+          <li>例）{用途・シーン}</li>
+          <li>例）{文字数}</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">④ あなたは「わかりやすい業務マニュアル専門ライター」です。
+
+以下の条件に従って、社内向けマニュアルを作成してください。
+
+▼マニュアルの対象
+- 業務・ツール名：{マニュアルの対象業務・ツール名}
+- 想定読者：{想定読者}
+- マニュアルの目的：{マニュアルの目的}
+- 使用環境・前提条件：{使用環境・前提条件}
+
+▼全体の構成
+1. マニュアルのタイトル
+2. 想定読者と前提スキル
+3. ゴール（このマニュアルを読んだあとにできるようになること）
+4. 全体概要（3〜5行）
+5. 詳細手順
+   - ステップごとに番号付きで記載
+   - 各ステップに「目的」「操作内容」「注意点」があると理想
+6. よくある質問（3〜5個）
+7. トラブルシューティング（ありがちな失敗パターンと対処法）
+8. 補足（用語の簡単な説明など）
+
+▼出力フォーマット
+- 見出しに「# / ## / ###」を使って、Markdown形式で出力してください。
+- 結論が先に来るように書いてください。
+- 文体は「{文体}」で統一してください。
+- ステップの粒度は「{ステップの数や粒度の希望}」に合わせてください。
+</h2>
+        <p class="text-xs text-gray-500 mb-1">
+          ※ ユーザーが書き換える可変部分は <code>{ }</code> で囲んでください
+        </p>
+        <pre class="bg-gray-900 text-gray-100 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>ここにプロンプト本文</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑤ ChatGPT（GPT-4 以上） / Gemini 1.5 Pro などテキスト生成が得意なモデル</h2>
+        <p class="text-sm text-gray-700">
+          例）ChatGPT（GPT-4.1） / Gemini 1.5 Pro などの大規模言語モデル
+        </p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑥ 使い方のポイント（コツ）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>先に「想定読者」と「ゴール」をしっかり書くと、精度が上がる</li>
+
+<li>すでにある社内資料があれば、要約をコピペして「前提情報」として追記してもOK</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑦ 成果物（生成物の例）</h2>
+        <pre class="bg-gray-50 text-gray-800 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>「新入社員向け：社内チャットツールの使い方マニュアル」
+
+「アルバイト向け：POSレジの基本操作マニュアル」</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑧ 注意点（失敗しやすいポイント）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>社内固有のルールや禁止事項は、プロンプトに明示的に書かないと抜けやすい</li>
+          <li>セキュリティや個人情報の扱いなど、重要な部分は人間側で必ず最終チェックする</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2 border-t pt-4">
+        <h2 class="text-lg font-semibold">つくレポ</h2>
+        <p class="text-sm text-gray-600">
+          ※ 将来の会員投稿機能で、実際に使った人のフィードバックを載せるエリア
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="border-t bg-white mt-8">
+    <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">
+      &copy; AIプロンプトレシピ
+    </div>
+  </footer>
+</body>
+</html>
+
