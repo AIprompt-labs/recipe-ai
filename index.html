@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIプロンプトレシピ - 誰でも使えるレシピ集</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+        .recipe-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .recipe-card:hover {
+            transform: translateY(-2px);
+        }
+        .highlight-variable {
+            /* 調整必須パラメータのハイライトスタイル */
+            background-color: #ffedc7; /* 薄いオレンジ背景 */
+            color: #d97706; /* 濃いオレンジの文字 */
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 4px;
+            cursor: help;
+        }
+        /* スクロールバーのスタイルをカスタム */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 3px;
+        }
+        /* AI生成ローディングアニメーション */
+        .ai-loading {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid #e2e8f0;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase variables exposed to global scope via window
+        window.appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; 
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const apiKey = ""; // Gemini API Key (Runtime injected)
+
+        if (Object.keys(firebaseConfig).length > 0) {
+            setLogLevel('Debug');
+            const app = initializeApp(firebaseConfig);
+            window.db = getFirestore(app);
+            window.auth = getAuth(app);
+        } else {
+            console.error("Firebase configuration is missing.");
+        }
+
+        // --- Filter Logic ---
+        window.applyCategoryFilter = () => {
+            const filterElement = document.getElementById('category-filter');
+            if (!filterElement) return;
+
+            const filterValue = filterElement.value;
+            const recipeList = document.getElementById('recipe-list');
+            // すべてのカテゴリーセクションを取得
+            const sections = recipeList.querySelectorAll('section[id^="category-"]');
+
+            sections.forEach(section => {
+                // セクションIDからカテゴリー名を取得 (例: 'category-文章生成' -> '文章生成')
+                const categoryId = section.id.replace('category-', '');
+                
+                if (filterValue === 'all' || categoryId === filterValue) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        };
+
+        window.initApp = async () => {
+            if (!window.db) return;
+
+            // Authentication
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                try {
+                    await signInWithCustomToken(window.auth, __initial_auth_token);
+                } catch (error) {
+                    console.error("Custom token sign-in failed, trying anonymous sign-in.", error);
+                    await signInAnonymously(window.auth);
+                }
+            } else {
+                await signInAnonymously(window.auth);
+            }
+
+            window.userId = window.auth.currentUser?.uid || crypto.randomUUID();
+            document.getElementById('user-id-display').textContent = `ユーザーID: ${window.userId}`;
+
+            // Initialize Data and Listen
+            document.getElementById('loading-indicator').classList.add('hidden');
+            
+            // フィルターの変更リスナーを設定
+            document.getElementById('category-filter').addEventListener('change', applyCategoryFilter);
+            
+            // データロード開始
+            await loadInitialDataAndListen(window.db, window.appId, window.userId);
+        };
+
+        window.loadInitialDataAndListen = async (db, appId, userId) => {
+            const recipeCollectionPath = `artifacts/${appId}/public/data/recipes`;
+            const recipesCollectionRef = collection(db, recipeCollectionPath);
+
+            // 運営側初期レシピをチェック＆追加 (初回のみ)
+            await checkAndAddInitialRecipe(db, recipeCollectionPath, userId);
+
+            // リアルタイムリスナー設定
+            onSnapshot(recipesCollectionRef, (snapshot) => {
+                const recipes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderRecipeList(recipes, userId);
+                applyCategoryFilter(); // レンダリング後、現在のフィルターを適用
+            }, (error) => {
+                console.error("Error listening to recipes:", error);
+                document.getElementById('recipe-list').innerHTML = `<p class="text-red-600">レシピデータの読み込み中にエラーが発生しました。</p>`;
+            });
+        };
+
+        const initialRecipeData = {
+            title: "15分で作成可能！時短レシピ考案",
+            purpose: "料理初心者でも実行できる分かりやすいレシピを作成する",
+            ingredients: [
+                "作りたい人数", "料理のジャンル", "調理時間", "アレルギー情報", "材料",
+                "味の方向性 (任意)", "カロリー (任意)", "特別用途 (任意)", "調理器具 (任意)"
+            ],
+            prompt: `【指示】
+以下の条件で、初心者でも作れる料理レシピを考案してください。
+プロの料理家のように、わかりやすく丁寧に書くこと。
+
+【料理ジャンル】
+{料理ジャンル}
+
+【材料】
+{材料リスト}
+
+【人数】
+{人数}
+
+【調理時間】
+{調理時間}
+
+【味の方向性】
+{味の方向性}
+
+【アレルギー・制限】
+{アレルギー}
+
+【特別用途】
+{特別用途}
+
+【出力形式】
+①料理名
+②概要（どんな料理か）
+③材料（分量つき）
+④手順（番号でわかりやすく）
+⑤コツ・ポイント
+⑥アレンジ例
+⑦保存方法（作り置き対応）`,
+            ai_model: "Gemini 1.5 Pro, GPT-4",
+            tips: "・「材料」だけ入れると、凝ったものが出やすい\n・「味の方向性」を入れると、好みに寄せられる\n・「保存方法」を指定すると、作り置き需要に刺さる",
+            example_output: `料理名
+鶏むね肉の甘辛さっぱり照り焼き（2人前）...（省略）`,
+            fail_points: "・「材料」が曖昧だと奇妙なレシピになることがある\n・小学生でも作れるレベルにしたい場合は細かく指示する\n・調理器具を指定しないと難易度が上がりやすい",
+            category: "文章生成",
+            created_at: new Date().toISOString(),
+            user_id: "運営"
+        };
+
+        const checkAndAddInitialRecipe = async (db, collectionPath, userId) => {
+            const q = query(collection(db, collectionPath), where("user_id", "==", "運営"));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                console.log("Adding initial recipe...");
+                try {
+                    await addDoc(collection(db, collectionPath), initialRecipeData);
+                    console.log("Initial recipe added successfully.");
+                } catch (e) {
+                    console.error("Error adding initial recipe: ", e);
+                }
+            }
+        };
+
+        // カテゴリーの定義と表示順
+        const categoriesMap = {
+            "文章生成": "文章・テキスト作成のレシピ",
+            "画像生成": "画像・ビジュアルコンテンツ作成のレシピ",
+            "自動化": "作業効率化・自動実行のレシピ",
+            "その他": "ゲーム・絵本・動画など汎用的なレシピ"
+        };
+
+        const renderRecipeList = (recipes, currentUserId) => {
+            const listElement = document.getElementById('recipe-list');
+            listElement.innerHTML = '';
+            
+            // 1. レシピをカテゴリーでグループ化
+            const groupedRecipes = recipes.reduce((acc, recipe) => {
+                const category = recipe.category || "その他";
+                if (!acc[category]) {
+                    acc[category] = [];
+                }
+                acc[category].push(recipe);
+                return acc;
+            }, {});
+
+            let totalRenderedRecipes = 0;
+
+            // 2. カテゴリーの定義順に見出しとリストをレンダリング
+            Object.keys(categoriesMap).forEach(category => {
+                const categoryTitle = category;
+                const categoryDescription = categoriesMap[category];
+                const categoryRecipes = groupedRecipes[category] || [];
+
+                // レシピがないジャンルはセクションをスキップ
+                if (categoryRecipes.length === 0) {
+                    return; 
+                }
+                
+                totalRenderedRecipes += categoryRecipes.length;
+
+                // カテゴリーセクションのコンテナ (IDをフィルター用に設定)
+                const section = document.createElement('section');
+                section.className = 'mb-12';
+                section.id = `category-${categoryTitle}`; // ここをフィルターのキーとして利用
+
+                // 大見出し
+                section.innerHTML = `
+                    <div class="mb-6 border-b-2 border-blue-500 pb-2">
+                        <h3 class="text-3xl font-extrabold text-gray-800 tracking-tight">${categoryTitle}</h3>
+                        <p class="text-gray-500 mt-1">${categoryDescription}</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="recipes-for-${categoryTitle}">
+                        <!-- レシピカードがここに入ります -->
+                    </div>
+                `;
+                
+                const recipesContainer = section.querySelector(`#recipes-for-${categoryTitle}`);
+
+                categoryRecipes.forEach(recipe => {
+                    const card = document.createElement('div');
+                    card.className = 'recipe-card bg-white p-6 rounded-xl border border-gray-200 cursor-pointer transition duration-200 hover:border-blue-500';
+                    card.onclick = () => openRecipeModal(recipe, currentUserId);
+                    
+                    card.innerHTML = `
+                        <p class="text-sm font-semibold text-blue-600 mb-1">${recipe.category}</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${recipe.title}</h3>
+                        <p class="text-gray-600 text-sm truncate">${recipe.purpose}</p>
+                        <div class="mt-4 flex items-center justify-between text-xs text-gray-400">
+                            <span>投稿者: ${recipe.user_id === '運営' ? '運営' : 'ユーザー'}</span>
+                            <span>作成日: ${new Date(recipe.created_at).toLocaleDateString('ja-JP')}</span>
+                        </div>
+                    `;
+                    recipesContainer.appendChild(card);
+                });
+
+                listElement.appendChild(section);
+            });
+            
+            // 全レシピが空の場合の表示
+            if (totalRenderedRecipes === 0) {
+                listElement.innerHTML = `<p class="text-gray-500 text-center py-8">まだ誰もレシピを投稿していません。</p>`;
+            }
+        };
+
+        // --- Gemini API Call Logic ---
+        async function callGemini(promptText) {
+            if (!apiKey) {
+                throw new Error("API Key is missing.");
+            }
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            // ペイロードの構築
+            const payload = {
+                contents: [{ parts: [{ text: promptText }] }],
+            };
+
+            // 簡易的な指数バックオフ処理
+            const MAX_RETRIES = 5;
+            for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+                    } else if (response.status === 429 && attempt < MAX_RETRIES - 1) {
+                        const delay = Math.pow(2, attempt) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue; // リトライ
+                    } else {
+                        throw new Error(`Gemini API Error: ${response.statusText}`);
+                    }
+                } catch (error) {
+                    if (attempt === MAX_RETRIES - 1) {
+                         throw error;
+                    }
+                    const delay = Math.pow(2, attempt) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+        // --- Modal Logic ---
+
+        window.openRecipeModal = (recipe, currentUserId) => {
+            const modal = document.getElementById('recipe-modal');
+            modal.classList.remove('hidden');
+
+            // 基本情報のレンダリング
+            document.getElementById('modal-title').textContent = recipe.title;
+            document.getElementById('modal-category').textContent = recipe.category;
+            document.getElementById('modal-purpose').textContent = recipe.purpose;
+            document.getElementById('modal-ai-model').textContent = recipe.ai_model;
+            document.getElementById('modal-tips').innerHTML = (recipe.tips || "").replace(/\n/g, '<br>');
+            document.getElementById('modal-example-output').textContent = recipe.example_output;
+            document.getElementById('modal-fail-points').innerHTML = (recipe.fail_points || "").replace(/\n/g, '<br>');
+            document.getElementById('modal-ingredients').innerHTML = (recipe.ingredients || []).map(ing => `<span class="bg-gray-100 text-gray-700 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">${ing}</span>`).join('');
+
+            // プロンプト本文のハイライト処理
+            const promptText = recipe.prompt || "";
+            const highlightedPrompt = promptText.replace(/(\{.+?\})/g, (match) => {
+                const variableName = match.substring(1, match.length - 1);
+                return `<span class="highlight-variable" title="調整パラメータ: ${variableName}">${match}</span>`;
+            });
+            document.getElementById('modal-prompt-body').innerHTML = highlightedPrompt.replace(/\n/g, '<br>');
+
+            // --- Gemini実行エリアのセットアップ ---
+            const trySection = document.getElementById('try-recipe-section');
+            const inputsContainer = document.getElementById('try-recipe-inputs');
+            const resultContainer = document.getElementById('try-recipe-result');
+            const resultText = document.getElementById('try-recipe-output');
+            
+            inputsContainer.innerHTML = '';
+            resultContainer.classList.add('hidden');
+            resultText.textContent = '';
+
+            // プロンプトから変数({変数名})を抽出して入力フォームを生成
+            const variables = [...promptText.matchAll(/\{(.+?)\}/g)].map(m => m[1]);
+            const uniqueVars = [...new Set(variables)]; // 重複排除
+
+            if (uniqueVars.length > 0) {
+                trySection.classList.remove('hidden');
+                uniqueVars.forEach(v => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = "mb-3";
+                    wrapper.innerHTML = `
+                        <label class="block text-xs font-bold text-gray-700 mb-1">${v}</label>
+                        <input type="text" data-var="${v}" class="variable-input w-full p-2 border border-gray-300 rounded text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="${v}を入力...">
+                    `;
+                    inputsContainer.appendChild(wrapper);
+                });
+            } else {
+                // 変数がない場合はボタンだけ表示
+                 trySection.classList.remove('hidden');
+                 inputsContainer.innerHTML = '<p class="text-sm text-gray-500 mb-2">このレシピには設定可能な変数がありません。そのまま実行できます。</p>';
+            }
+
+            // 実行ボタンのイベント設定
+            const runButton = document.getElementById('run-gemini-button');
+            runButton.onclick = async () => {
+                const btnText = document.getElementById('run-btn-text');
+                const loader = document.getElementById('run-btn-loader');
+                
+                // 入力値を取得してプロンプトを構築
+                let finalPrompt = promptText;
+                const inputs = inputsContainer.querySelectorAll('input.variable-input');
+                inputs.forEach(input => {
+                    const key = input.getAttribute('data-var');
+                    const val = input.value || `(未指定: ${key})`;
+                    // 全置換
+                    finalPrompt = finalPrompt.split(`{${key}}`).join(val);
+                });
+
+                // UI Loading
+                runButton.disabled = true;
+                runButton.classList.add('opacity-75', 'cursor-not-allowed');
+                btnText.textContent = 'Geminiが思考中...';
+                loader.classList.remove('hidden');
+                resultContainer.classList.add('hidden');
+
+                try {
+                    const result = await callGemini(finalPrompt);
+                    resultText.textContent = result;
+                    resultContainer.classList.remove('hidden');
+                    // 結果までスクロール
+                    resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } catch (err) {
+                    alertMessage(`エラーが発生しました: ${err.message}`, 'error');
+                } finally {
+                    runButton.disabled = false;
+                    runButton.classList.remove('opacity-75', 'cursor-not-allowed');
+                    btnText.textContent = 'Geminiで実行する';
+                    loader.classList.add('hidden');
+                }
+            };
+
+            // 削除ボタンの表示制御
+            const deleteButton = document.getElementById('delete-recipe-button');
+            if (recipe.user_id === currentUserId) {
+                deleteButton.classList.remove('hidden');
+                // ★修正点: カスタム確認モーダルを開くように変更
+                deleteButton.onclick = () => openConfirmModal(recipe.id, recipe.title);
+            } else {
+                deleteButton.classList.add('hidden');
+            }
+        };
+
+        window.closeModal = () => {
+            document.getElementById('recipe-modal').classList.add('hidden');
+            document.getElementById('new-recipe-modal').classList.add('hidden');
+            document.getElementById('confirm-modal').classList.add('hidden'); // 確認モーダルも閉じる
+        };
+
+        window.openNewRecipeModal = () => {
+            document.getElementById('new-recipe-modal').classList.remove('hidden');
+            document.getElementById('new-recipe-form').onsubmit = (e) => handleNewRecipeSubmit(e, window.db, window.appId, window.userId);
+        };
+
+        window.handleNewRecipeSubmit = async (e, db, appId, userId) => {
+            e.preventDefault();
+            const form = e.target;
+            const newRecipe = {
+                title: form.title.value,
+                purpose: form.purpose.value,
+                ingredients: form.ingredients.value.split(',').map(s => s.trim()).filter(s => s.length > 0),
+                prompt: form.prompt.value,
+                ai_model: form.ai_model.value,
+                tips: form.tips.value,
+                example_output: form.example_output.value,
+                fail_points: form.fail_points.value,
+                category: form.category.value,
+                created_at: new Date().toISOString(),
+                user_id: userId
+            };
+
+            try {
+                const recipeCollectionPath = `artifacts/${appId}/public/data/recipes`;
+                await addDoc(collection(db, recipeCollectionPath), newRecipe);
+                alertMessage('新しいレシピが投稿されました！', 'success');
+                closeModal();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alertMessage('レシピの投稿に失敗しました。', 'error');
+            }
+        };
+
+        // ★修正点: カスタム確認モーダルを開く関数
+        window.openConfirmModal = (recipeId, title) => {
+            closeModal(); // 他のモーダルを閉じる
+            const modal = document.getElementById('confirm-modal');
+            const confirmMessage = document.getElementById('confirm-message');
+            const confirmButton = document.getElementById('confirm-delete-button');
+
+            confirmMessage.textContent = `レシピ「${title}」を本当に削除しますか？`;
+            confirmButton.onclick = () => {
+                deleteRecipe(recipeId);
+            };
+            modal.classList.remove('hidden');
+        };
+
+
+        // ★修正点: 削除ロジックを修正
+        window.deleteRecipe = async (recipeId) => {
+            if (!window.db || !window.appId) {
+                alertMessage('エラー: FirebaseまたはApp IDが初期化されていません。', 'error');
+                return;
+            }
+
+            try {
+                const recipeDocPath = `artifacts/${window.appId}/public/data/recipes/${recipeId}`;
+                await deleteDoc(doc(window.db, recipeDocPath));
+                alertMessage('レシピが削除されました。', 'success');
+                closeModal();
+            } catch (error) {
+                console.error("Error deleting document: ", error);
+                alertMessage('レシピの削除に失敗しました。', 'error');
+            }
+        };
+
+        window.alertMessage = (message, type) => {
+            const container = document.getElementById('alert-container');
+            const alertDiv = document.createElement('div');
+            const baseClasses = "fixed top-4 right-4 z-50 p-4 rounded-lg shadow-xl text-white transition-opacity duration-300";
+            alertDiv.className = type === 'success' ? `${baseClasses} bg-green-500` : `${baseClasses} bg-red-500`;
+            alertDiv.textContent = message;
+            container.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.classList.add('opacity-0');
+                alertDiv.addEventListener('transitionend', () => alertDiv.remove());
+            }, 3000);
+        };
+
+    </script>
+</head>
+<body onload="initApp()" class="min-h-screen">
+    <!-- アラートメッセージコンテナ -->
+    <div id="alert-container"></div>
+
+    <header class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">
+                AIプロンプトレシピ
+            </h1>
+            <div class="text-right">
+                <p id="user-id-display" class="text-xs text-gray-500 mb-1">ユーザーID: 匿名</p>
+                <button onclick="openNewRecipeModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150 shadow-md">
+                    + 新しいレシピを投稿
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">誰でも使えるAIレシピ集</h2>
+        
+        <!-- ドロップダウンフィルターを再配置 -->
+        <div class="mb-8 flex justify-end">
+            <label for="category-filter" class="text-gray-700 font-medium mr-3 self-center text-sm sm:text-base">ジャンルで絞り込む:</label>
+            <select id="category-filter" class="p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 w-full md:w-64">
+                <option value="all">すべて表示</option>
+                <option value="文章生成">文章生成</option>
+                <option value="画像生成">画像生成</option>
+                <option value="自動化">自動化</option>
+                <option value="その他">その他</option>
+            </select>
+        </div>
+
+        <div id="loading-indicator" class="text-gray-500 text-center py-8">
+            データを読み込み中...
+        </div>
+
+        <!-- レシピリスト（JavaScriptでジャンルごとのセクションがレンダリングされ、フィルターで表示/非表示が切り替えられます） -->
+        <div id="recipe-list" class="space-y-12">
+            <!-- レシピカードがここにレンダリングされます -->
+        </div>
+    </main>
+
+    <!-- レシピ詳細モーダル -->
+    <div id="recipe-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full hidden z-40">
+        <div class="relative top-10 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-2/3 shadow-2xl rounded-xl bg-white pb-20">
+            <div class="flex justify-between items-start border-b pb-4 mb-4">
+                <div>
+                    <span id="modal-category" class="inline-block bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-3 py-1 rounded-full">ジャンル</span>
+                    <h3 id="modal-title" class="text-3xl font-extrabold text-gray-900 mt-2">レシピタイトル</h3>
+                </div>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl leading-none">
+                    &times;
+                </button>
+            </div>
+
+            <div class="custom-scrollbar max-h-[75vh] pr-4 overflow-y-auto">
+                
+                <!-- 目的 -->
+                <section class="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">② 目的（このレシピで解決する課題）</h4>
+                    <p id="modal-purpose" class="text-gray-800"></p>
+                </section>
+
+                <!-- 食材 -->
+                <section class="mb-6 p-4 border-l-4 border-blue-500 bg-blue-50 rounded-lg">
+                    <h4 class="text-lg font-semibold text-blue-700 mb-3">③ 食材（プロンプトの構成要素）</h4>
+                    <div id="modal-ingredients" class="flex flex-wrap gap-2">
+                        <!-- 食材タグがここに入ります -->
+                    </div>
+                </section>
+
+                <!-- レシピ（指示文章） -->
+                <section class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">④ レシピ（実際のプロンプト本文）</h4>
+                    <pre id="modal-prompt-body" class="whitespace-pre-wrap p-4 bg-gray-900 text-gray-50 rounded-lg text-sm custom-scrollbar max-h-60 overflow-y-auto"></pre>
+                    <p class="text-sm text-gray-500 mt-2">※ <span class="highlight-variable" title="調整必須パラメータ">ハイライト部分</span>は、あなたの情報に合わせて調整する必須パラメータです。</p>
+                </section>
+
+                <!-- AIキッチン（試作セクション） -->
+                <section id="try-recipe-section" class="mb-8 p-6 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 rounded-xl shadow-sm hidden">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl mr-2">✨</span>
+                        <h4 class="text-xl font-bold text-indigo-900">AIキッチン：このレシピを今すぐ試作</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">以下の材料（パラメータ）を入力して実行すると、Geminiがレシピ通りに調理（生成）します。</p>
+                    
+                    <!-- 動的入力フォーム -->
+                    <div id="try-recipe-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <!-- ここにJSで入力欄が生成されます -->
+                    </div>
+
+                    <!-- 実行ボタン -->
+                    <button id="run-gemini-button" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md flex justify-center items-center">
+                        <span id="run-btn-loader" class="ai-loading mr-2 hidden"></span>
+                        <span id="run-btn-text">Geminiで実行する</span>
+                    </button>
+
+                    <!-- 結果表示エリア -->
+                    <div id="try-recipe-result" class="mt-6 hidden">
+                        <h5 class="font-bold text-gray-700 mb-2">生成結果:</h5>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-inner">
+                            <pre id="try-recipe-output" class="whitespace-pre-wrap text-gray-800 text-sm font-mono"></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 調理器具 -->
+                    <section class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">⑤ 調理器具（使用AIモデル）</h4>
+                        <p id="modal-ai-model" class="text-gray-800 p-3 bg-white border rounded-lg"></p>
+                    </section>
+
+                    <!-- 使い方のポイント（コツ） -->
+                    <section class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">⑥ 使い方のポイント（コツ）</h4>
+                        <pre id="modal-tips" class="text-gray-800 p-3 bg-green-50 rounded-lg text-sm whitespace-pre-wrap"></pre>
+                    </section>
+                </div>
+
+                <!-- 成果物（生成例） -->
+                <section class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">⑦ 成果物（生成物の例）</h4>
+                    <pre id="modal-example-output" class="text-gray-800 p-4 bg-yellow-50 rounded-lg text-sm whitespace-pre-wrap custom-scrollbar max-h-60 overflow-y-auto"></pre>
+                </section>
+
+                <!-- 注意点（失敗しやすいポイント） -->
+                <section class="mb-6">
+                    <h4 class="text-lg font-semibold text-red-700 mb-2">⑧ 注意点（失敗しやすいポイント）</h4>
+                    <pre id="modal-fail-points" class="text-red-700 p-3 bg-red-100 rounded-lg text-sm whitespace-pre-wrap"></pre>
+                </section>
+
+                <!-- 削除ボタン -->
+                <div class="flex justify-end pt-4 border-t">
+                    <button id="delete-recipe-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 shadow-md hidden">
+                        このレシピを削除
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新規レシピ投稿モーダル -->
+    <div id="new-recipe-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-10 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-2xl rounded-xl bg-white">
+            <div class="flex justify-between items-start border-b pb-4 mb-4">
+                <h3 class="text-2xl font-bold text-gray-900">新しいAIレシピを投稿</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl leading-none">
+                    &times;
+                </button>
+            </div>
+            
+            <form id="new-recipe-form" class="custom-scrollbar max-h-[80vh] pr-4 overflow-y-auto space-y-4">
+                <!-- ① タイトル -->
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700">① タイトル (15〜30文字程度) <span class="text-red-500">*</span></label>
+                    <input type="text" id="title" name="title" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                </div>
+
+                <!-- カテゴリー -->
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700">ジャンル <span class="text-red-500">*</span></label>
+                    <select id="category" name="category" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                        <option value="文章生成">文章生成</option>
+                        <option value="画像生成">画像生成</option>
+                        <option value="自動化">自動化</option>
+                        <option value="その他">その他（ゲーム・絵本・動画など）</option>
+                    </select>
+                </div>
+                
+                <!-- ② 目的 -->
+                <div>
+                    <label for="purpose" class="block text-sm font-medium text-gray-700">② 目的（このプロンプトが解決する課題） <span class="text-red-500">*</span></label>
+                    <input type="text" id="purpose" name="purpose" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                </div>
+
+                <!-- ③ 食材 -->
+                <div>
+                    <label for="ingredients" class="block text-sm font-medium text-gray-700">③ 食材（プロンプトの構成要素をカンマ区切りで） <span class="text-red-500">*</span></label>
+                    <input type="text" id="ingredients" name="ingredients" required placeholder="例: 読者, 目的, トーン, 必要な情報, 禁止事項" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                </div>
+
+                <!-- ④ レシピ（プロンプト本文） -->
+                <div>
+                    <label for="prompt" class="block text-sm font-medium text-gray-700">④ レシピ（実際のプロンプト本文） <span class="text-red-500">*</span></label>
+                    <textarea id="prompt" name="prompt" rows="8" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 font-mono text-sm" placeholder="例: あなたは【役割】です。以下の条件に基づき..."></textarea>
+                    <p class="text-xs text-gray-500 mt-1">※ ユーザーが書き換えるべき可変部分は `{ }` で囲んでください。例: `{ユーザーが埋める情報}`</p>
+                </div>
+
+                <!-- ⑤ 調理器具 -->
+                <div>
+                    <label for="ai_model" class="block text-sm font-medium text-gray-700">⑤ 調理器具（使用AIモデル） <span class="text-red-500">*</span></label>
+                    <input type="text" id="ai_model" name="ai_model" required placeholder="例: Gemini 1.5 Pro（論理性が高い）, Midjourney V6（高画質）" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                </div>
+
+                <!-- ⑥ 使い方のポイント（コツ） -->
+                <div>
+                    <label for="tips" class="block text-sm font-medium text-gray-700">⑥ 使い方のポイント（コツ）</label>
+                    <textarea id="tips" name="tips" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+                </div>
+
+                <!-- ⑦ 成果物（生成物の例） -->
+                <div>
+                    <label for="example_output" class="block text-sm font-medium text-gray-700">⑦ 成果物（生成物の例） <span class="text-red-500">*</span></label>
+                    <textarea id="example_output" name="example_output" rows="6" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+                </div>
+
+                <!-- ⑧ 注意点 -->
+                <div>
+                    <label for="fail_points" class="block text-sm font-medium text-gray-700">⑧ 注意点（失敗しやすいポイント）</label>
+                    <textarea id="fail_points" name="fail_points" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+                </div>
+
+                <div class="pt-4 border-t">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150 shadow-md w-full">
+                        レシピを投稿する
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- ★追加: カスタム確認モーダル -->
+    <div id="confirm-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-40 mx-auto p-8 border w-96 shadow-2xl rounded-xl bg-white text-center">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">削除の確認</h3>
+            <p id="confirm-message" class="text-gray-700 mb-6">レシピを本当に削除しますか？</p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-150">
+                    キャンセル
+                </button>
+                <button id="confirm-delete-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150">
+                    削除する
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
