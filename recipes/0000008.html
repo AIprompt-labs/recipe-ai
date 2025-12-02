@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>広告バナーを自動生成するプロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <header class="border-b bg-white">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+      <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">デザイン生成</span></span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm text-gray-600">
+      広告枠（ここにA8やバリューコマースのタグを後から貼り付け）
+    </div>
+
+    <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+      <header class="space-y-2">
+        <p class="text-xs text-gray-500">レシピID: banner-0001</p>
+        <h1 class="text-2xl font-bold">【テンプレ】広告バナーを自動生成するプロンプト</h1>
+        <p class="text-sm text-gray-600">② 目的：広告バナーを、素早く・統一感をもって・デザイン品質を担保しながら生成する。</p>
+      </header>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">③ {バナーの種類} {デザインテイスト} {想定読者・ターゲット} {掲載場所} {サイズ・比率} {テキスト量の方針} {文体や雰囲気}</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>例）{ターゲット}</li>
+          <li>例）{バナー用途（LP誘導・キャンペーン告知 など）}</li>
+          <li>例）{サイズ例：1080×1080、1200×628}</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">④ あなたは「広告バナー専門デザイナー」です。 以下の条件に従って広告バナーの構成指示を作成してください。<br>▼バナー条件<br>・バナー種類：{バナーの種類}<br>・デザインテイスト：{デザインテイスト}<br>・想定読者：{想定読者}<br>・掲載場所：{掲載場所}<br>・サイズ：{サイズ・比率}<br>▼出力構成<br>1. 全体コンセプト（先に結論）<br>2. 配色（具体色名）<br>3. レイアウト構成（要素の配置・優先順位）<br>4. キャッチコピー案（3案）<br>5. 本文コピー案（2案）<br>6. 使用する画像・素材の指示<br>7. 仕上がりイメージの説明<br><br>▼出力フォーマット<br>・Markdown形式で「# / ## / ###」を使う<br>・文体は「{文体や雰囲気}」に統一<br>・デザイン初心者でも理解できるように説明する</h2>
+        <p class="text-xs text-gray-500 mb-1">※ ユーザーが書き換える可変部分は <code>{ }</code> で囲んでください</p>
+        <pre class="bg-gray-900 text-gray-100 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>ここにプロンプト本文</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑤ ChatGPT（GPT-4 以上） / デザイン生成AI</h2>
+        <p class="text-sm text-gray-700">例）ChatGPT、Canva AI、Figma AI など</p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑥ 使い方のポイント（コツ）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>「ターゲット」と「訴求」を最初に明確にするとデザインの精度が上がる</li>
+          <li>過去のバナーを提示して「同じテイストで」と伝えるのも有効</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑦ 成果物（生成物の例）</h2>
+        <pre class="bg-gray-50 text-gray-800 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>「Instagram広告：20代女性向け英会話スクールのバナー」
+「LP誘導用：キャンペーン割引バナー」</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑧ 注意点（失敗しやすいポイント）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>文字を詰め込みすぎると読みにくくなるので、コピー量を明確に指示する</li>
+          <li>使用画像の著作権や利用範囲は必ず事前に確認する</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2 border-t pt-4">
+        <h2 class="text-lg font-semibold">つくレポ</h2>
+        <p class="text-sm text-gray-600">※ 将来の会員投稿機能で、実際に使った人のフィードバックを載せるエリア</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="border-t bg-white mt-8">
+    <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">&copy; AIプロンプトレシピ</div>
+  </footer>
+</body>
+</html>
