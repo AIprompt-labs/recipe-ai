@@ -8,15 +8,6 @@
 
 <style>
 body { background:#f7f7f7; }
-
-/* PC/SP広告切り替え */
-.ad-desktop { display:block; text-align:center; margin:20px 0; }
-.ad-mobile { display:none; text-align:center; margin:20px 0; }
-@media (max-width:768px){
-  .ad-desktop{display:none;}
-  .ad-mobile{display:block;}
-}
-
 .recipe-card {
   background:white;
   padding:20px;
@@ -33,91 +24,106 @@ body { background:#f7f7f7; }
 <header class="bg-white shadow">
   <div class="max-w-5xl mx-auto p-4">
     <h1 class="text-3xl font-bold">AIプロンプトレシピ</h1>
-    <p class="text-gray-500 text-sm">静的バージョン（高速・SEO最適）</p>
+    <p class="text-gray-500 text-sm">静的バージョン（自動生成対応）</p>
   </div>
 </header>
 
 <main class="max-w-5xl mx-auto p-4 pb-10">
 
-<!-- ▼ 広告ブロック -->
+<!-- ▼ 広告ブロック（必要なら手動で調整） -->
 <div class="my-6 text-center">
-  <div class="ad-desktop">
-    <a href="https://px.a8.net/svt/ejp?a8mat=45K4X6+4HXXBM+50+7S05SX" target="_blank" rel="nofollow noopener">
-      <img width="728" height="90" src="https://www24.a8.net/svt/bgt?aid=251202282272&wid=001&eno=01&mid=s00000000018047030000&mc=1">
-    </a>
-  </div>
-
-  <div class="ad-mobile">
-    <a href="https://px.a8.net/svt/ejp?a8mat=45K4X6+4HXXBM+50+7S2AYP" target="_blank" rel="nofollow noopener">
-      <img width="300" height="250" src="https://www29.a8.net/svt/bgt?aid=251202282272&wid=001&eno=01&mid=s00000000018047040000&mc=1">
-    </a>
-  </div>
+  （広告タグ）
 </div>
 <!-- ▲ 広告ブロック -->
 
 <h2 class="text-2xl font-bold mb-4">レシピ一覧</h2>
 
+<!-- ▼ ここに recipes/*.html から自動生成される -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-  <!-- ここから0000001〜0000014を全部入れる -->
-  <a href="recipes/0000001.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">文章生成</p>
-    <h3 class="text-lg font-bold">0000001：マニュアル作成</h3>
-  </a>
+<a href="recipes/0000001.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000001：タイトルをここに</h3>
+</a>
+  
+<a href="recipes/0000002.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000002：【料理レシピ】初心者でも作れる美味しいレシピを自動生成</h3>
+</a>
+  
+<a href="recipes/0000003.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000003：【自己紹介】読みやすく魅力的なプロフィール文章を自動生成</h3>
+</a>
+  
+<a href="recipes/0000004.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000004：【スケジュール表】1日のタイムテーブルを自動作成</h3>
+</a>
+  
+<a href="recipes/0000005.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000005：【翻訳】自然で読みやすい文章に変換するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000006.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000006：【絵本生成】物語とイラストを自動でつくる</h3>
+</a>
+  
+<a href="recipes/0000007.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000007：【AIアバター】本人に寄せた自画像を生成する</h3>
+</a>
+  
+<a href="recipes/0000008.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000008：広告バナーを自動生成するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000009.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000009：SNSアイコンを自動生成するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000010.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000010：オンライン背景（バーチャル背景）を自動生成するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000011.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000011：メール文章を自動生成・自動返信するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000012.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000012：資料作成を自動生成するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000013.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000013：ゲームを自動生成するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000014.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000014：紹介動画を自動生成するプロンプト</h3>
+</a>
+  
+<a href="recipes/0000099.html" class="recipe-card">
+  <p class="text-blue-600 text-sm">レシピ</p>
+  <h3 class="text-lg font-bold">0000099：テスタイトル</h3>
+</a>
+  
+</div>
+<!-- ▲ 自動生成部分 -->
 
-  <a href="recipes/0000002.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">文章生成</p>
-    <h3 class="text-lg font-bold">0000002：文章テンプレ</h3>
-  </a>
+</main>
 
-  <a href="recipes/0000003.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">文章生成</p>
-    <h3 class="text-lg font-bold">0000003：文章校正</h3>
-  </a>
+<footer class="text-center text-gray-400 text-sm p-6">
+  © AIプロンプトレシピ
+</footer>
 
-  <a href="recipes/0000004.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">画像生成</p>
-    <h3 class="text-lg font-bold">0000004：アイキャッチ画像</h3>
-  </a>
-
-  <a href="recipes/0000005.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">文章生成</p>
-    <h3 class="text-lg font-bold">0000005：構成テンプレ</h3>
-  </a>
-
-  <a href="recipes/0000006.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">SEO</p>
-    <h3 class="text-lg font-bold">0000006：SEO記事生成</h3>
-  </a>
-
-  <a href="recipes/0000007.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">文章生成</p>
-    <h3 class="text-lg font-bold">0000007：LP文章生成</h3>
-  </a>
-
-  <a href="recipes/0000008.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">画像生成</p>
-    <h3 class="text-lg font-bold">0000008：広告バナー</h3>
-  </a>
-
-  <a href="recipes/0000009.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">画像生成</p>
-    <h3 class="text-lg font-bold">0000009：SNSアイコン</h3>
-  </a>
-
-  <a href="recipes/0000010.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">画像生成</p>
-    <h3 class="text-lg font-bold">0000010：オンライン背景</h3>
-  </a>
-
-  <a href="recipes/0000011.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">自動化</p>
-    <h3 class="text-lg font-bold">0000011：メール自動化</h3>
-  </a>
-
-  <a href="recipes/0000012.html" class="recipe-card">
-    <p class="text-blue-600 text-sm">資料作成</p>
-    <h3 class="text-lg font-bold">0000012：資料作成</h3>
-  </a>
-
-  <a href="recipes/0000013.html" class="
+</body>
+</html>
