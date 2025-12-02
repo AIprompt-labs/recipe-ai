@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>紹介動画生成プロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <header class="border-b bg-white">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+      <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">動画生成</span></span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm text-gray-600">
+      広告枠（ここにA8やバリューコマースのタグを後から貼り付け）
+    </div>
+
+    <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+      <header class="space-y-2">
+        <p class="text-xs text-gray-500">レシピID: video-0001</p>
+        <h1 class="text-2xl font-bold">【テンプレ】紹介動画を自動生成するプロンプト</h1>
+        <p class="text-sm text-gray-600">② 目的：商品・サービス・人物・企画の紹介動画を短時間で企画・構成・生成する。</p>
+      </header>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">③ {動画の種類（商品紹介/サービス紹介/自己紹介/企画PRなど）} {ターゲット層} {動画の目的} {動画の長さ（秒/分）} {テイスト（ポップ/クール/ビジネス/ナチュラル）} {使用媒体（YouTube/TikTok/Instagram/LP埋め込みなど）}</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>例）{訴求ポイント（強調したい特徴）}</li>
+          <li>例）{ナレーションの有無}</li>
+          <li>例）{字幕スタイルの希望}</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">④ あなたは「動画企画ディレクター」です。以下の条件に従って紹介動画構成を作成してください。<br><br>
+        ▼動画条件<br>
+        ・動画種類：{動画の種類}<br>
+        ・ターゲット：{ターゲット層}<br>
+        ・目的：{動画の目的}<br>
+        ・長さ：{動画の長さ}<br>
+        ・テイスト：{テイスト}<br>
+        ・媒体：{使用媒体}<br><br>
+        ▼出力構成<br>
+        1. 動画コンセプト（先に結論）<br>
+        2. 全体の流れ（シーン構成）<br>
+        3. 各シーンの詳細（テロップ/ナレーション/映像案）<br>
+        4. 使用素材（画像/動画/イラスト）<br>
+        5. 音楽・効果音の指示<br>
+        6. 動画の完成イメージ<br>
+        7. 生成AI用「完成プロンプト」<br><br>
+        ▼出力フォーマット<br>
+        ・Markdown形式（# / ## / ###）<br>
+        ・文体は「{文体}」で統一<br>
+        ・初心者でも動画が作れるように丁寧に説明</h2>
+
+        <p class="text-xs text-gray-500 mb-1">※ ユーザーが書き換える可変部分は <code>{ }</code> で囲んでください</p>
+        <pre class="bg-gray-900 text-gray-100 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>ここにプロンプト本文</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑤ ChatGPT（GPT-4 以上） / 動画生成AI</h2>
+        <p class="text-sm text-gray-700">例）Runway / Pika / AnimateDiff / Canva Video など</p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑥ 使い方のポイント（コツ）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>尺（長さ）を最初に決めると構成が作りやすい</li>
+          <li>シーンごとに「伝えたい一言」を固定すると視聴者が迷わない</li>
+          <li>字幕・BGM・ナレーションはテイストと整合性を持たせる</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑦ 成果物（生成物の例）</h2>
+        <pre class="bg-gray-50 text-gray-800 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>「30秒で伝わる：商品紹介ショート動画」
+「採用ページ用：社員インタビュー風ムービー」
+「SNS向け：サービス紹介アニメーション動画」</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑧ 注意点（失敗しやすいポイント）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>情報を詰め込みすぎると視聴者が離脱する</li>
+          <li>媒体に合わせて縦・横比を最初に設定すること</li>
+          <li>著作権のある素材は使用しない</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2 border-t pt-4">
+        <h2 class="text-lg font-semibold">つくレポ</h2>
+        <p class="text-sm text-gray-600">※ 将来の会員投稿機能で、実際に使った人のフィードバックを載せるエリア</p>
+      </section>
+
+    </article>
+  </main>
+
+  <footer class="border-t bg-white mt-8">
+    <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">&copy; AIプロンプトレシピ</div>
+  </footer>
+</body>
+</html>
