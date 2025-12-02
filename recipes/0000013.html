@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ゲーム生成プロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <header class="border-b bg-white">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+      <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">ゲーム生成</span></span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm text-gray-600">
+      広告枠（ここにA8やバリューコマースのタグを後から貼り付け）
+    </div>
+
+    <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+      <header class="space-y-2">
+        <p class="text-xs text-gray-500">レシピID: game-0001</p>
+        <h1 class="text-2xl font-bold">【テンプレ】ゲームを自動生成するプロンプト</h1>
+        <p class="text-sm text-gray-600">② 目的：オリジナルゲームの企画・設定・シナリオ・UI設計などを自動生成し、制作の土台を整える。</p>
+      </header>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">③ {ゲームジャンル（RPG/ADV/育成/謎解き/シミュレーションなど）} {世界観・テーマ} {プレイヤー層（年齢/性別/目的）} {ゲームの目的・遊び方} {対応デバイス} {デザインテイスト} {文字量の希望}</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>例）{ストーリー重視/ライトユーザー向け/没入系などの方針}</li>
+          <li>例）{敵・味方キャラの特徴}</li>
+          <li>例）{難易度やゲームの長さ}</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">④ あなたは「ゲーム企画専門クリエイター」です。以下の条件に従ってゲーム企画書を作成してください。<br><br>
+        ▼ゲーム条件<br>
+        ・ジャンル：{ゲームジャンル}<br>
+        ・世界観：{世界観・テーマ}<br>
+        ・プレイヤー層：{プレイヤー層}<br>
+        ・目的：{ゲームの目的・遊び方}<br>
+        ・デバイス：{対応デバイス}<br>
+        ・テイスト：{デザインテイスト}<br><br>
+        ▼出力構成<br>
+        1. ゲームタイトル案（3案）<br>
+        2. ゲーム概要（結論ファースト）<br>
+        3. 世界観設定（3〜6項目）<br>
+        4. 主要キャラクター設定（主人公/敵/サブキャラ）<br>
+        5. ゲームシステム（操作/ルール/勝利条件）<br>
+        6. マップ・ステージ案<br>
+        7. UI/UXの簡易設計案<br>
+        8. アイテム/スキル案<br>
+        9. バランス調整の方針<br>
+        10. シナリオ（プロローグ + 第1章）<br>
+        11. マーケティング戦略案（簡易）<br><br>
+        ▼出力フォーマット<br>
+        ・Markdown形式（# / ## / ### を使用）<br>
+        ・文体は「{文体}」で統一<br>
+        ・ゲーム企画初心者でも理解できる説明</h2>
+
+        <p class="text-xs text-gray-500 mb-1">※ ユーザーが書き換える可変部分は <code>{ }</code> で囲んでください</p>
+        <pre class="bg-gray-900 text-gray-100 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>ここにプロンプト本文</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑤ ChatGPT（GPT-4 以上） / ゲーム制作AI</h2>
+        <p class="text-sm text-gray-700">例）ChatGPT、Unity AI、RPGツクール系AI、ビジュアル生成AI</p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑥ 使い方のポイント（コツ）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>世界観とプレイヤー層を明確にすると一貫性が出る</li>
+          <li>システムとストーリーは「シンプルに」から始めると良い</li>
+          <li>キャラ設定は「外見/性格/能力/目的」の4点を書くとまとまる</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑦ 成果物（生成物の例）</h2>
+        <pre class="bg-gray-50 text-gray-800 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>「オリジナルRPGの企画書」
+「世界観と背景設定まとめ」
+「配信者向けミニゲーム案」</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑧ 注意点（失敗しやすいポイント）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>設定を盛り込みすぎると矛盾が出やすい</li>
+          <li>ゲームの目的が曖昧だとユーザーが迷う</li>
+          <li>難易度設計は序盤・中盤・終盤でバランスを変えること</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2 border-t pt-4">
+        <h2 class="text-lg font-semibold">つくレポ</h2>
+        <p class="text-sm text-gray-600">※ 将来の会員投稿機能で、実際に使った人のフィードバックを載せるエリア</p>
+      </section>
+
+    </article>
+  </main>
+
+  <footer class="border-t bg-white mt-8">
+    <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">&copy; AIプロンプトレシピ</div>
+  </footer>
+</body>
+</html>
