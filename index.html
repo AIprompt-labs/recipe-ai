@@ -7,6 +7,28 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* --- 広告の出し分け設定 --- */
+.ad-desktop {
+  display: block;
+  text-align: center; /* 中央寄せ */
+  margin: 20px 0;
+}
+.ad-mobile {
+  display: none;
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* 画面幅 768px 以下（スマホ）なら SP 広告だけ表示 */
+@media (max-width: 768px) {
+  .ad-desktop {
+    display: none;
+  }
+  .ad-mobile {
+    display: block;
+  }
+}
+/* --- 広告の出し分け設定 --- */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
@@ -786,6 +808,7 @@
 </body>
 
 </html>
+
 
 
 
