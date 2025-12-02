@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>自然な翻訳を生成するプロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+<header class="border-b bg-white">
+  <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+    <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">文章生成</span></span>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+  <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm">
+    広告枠（貼り付け予定）
+  </div>
+
+  <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+
+    <header>
+      <p class="text-xs">レシピID: recipe-0006</p>
+      <h1 class="text-2xl font-bold">【翻訳】自然で読みやすい文章に変換するプロンプト</h1>
+      <p class="text-sm text-gray-600">② 目的：直訳ではなく「伝わる翻訳」を行う。</p>
+    </header>
+
+    <section>
+      <h2 class="text-lg font-semibold">
+        ③ {翻訳元言語} {翻訳先言語} {用途} {専門分野} {トーン}
+      </h2>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">
+        ④ あなたは「ネイティブ翻訳家」です。  
+        以下の条件で翻訳してください。
+
+        ▼翻訳設定  
+        - 元言語：{翻訳元言語}  
+        - 先言語：{翻訳先言語}  
+        - 用途：{用途}  
+        - 専門分野：{専門分野}  
+        - トーン：{トーン}
+
+        ▼出力  
+        - 自然な翻訳文  
+        - 不明点の補足
+      </h2>
+
+      <p class="text-xs text-gray-500">※ { } は変数です</p>
+
+<pre class="bg-gray-900 text-gray-100 p-4 text-xs rounded-lg overflow-auto"><code>
+【指示】
+以下の文章を読みやすく翻訳してください。
+
+【翻訳元言語】{翻訳元言語}
+【翻訳先言語】{翻訳先言語}
+【用途】{用途}
+【専門分野】{専門分野}
+【トーン】{トーン}
+
+【本文】
+{本文}
+
+【出力形式】
+①翻訳文
+②補足説明
+</code></pre>
+
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑤ モデル</h2>
+      <p class="text-sm">ChatGPT / Gemini（翻訳が得意）</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑥ コツ</h2>
+      <ul class="list-disc list-inside text-sm">
+        <li>用途（ビジネス／SNS）を指定すると精度UP</li>
+        <li>専門分野を書いておくと誤訳が減る</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑦ 例</h2>
+<pre class="bg-gray-50 p-4 text-xs rounded-lg"><code>
+「ビジネスメール向け丁寧英語」
+「カジュアルなSNS英語」
+</code></pre>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑧ 注意点</h2>
+      <ul class="list-disc text-sm">
+        <li>固有名詞の取り扱いに注意</li>
+        <li>文字数制限があれば渡すこと</li>
+      </ul>
+    </section>
+
+    <section class="border-t pt-4">
+      <h2 class="text-lg font-semibold">つくレポ</h2>
+      <p class="text-sm">※ 投稿予定</p>
+    </section>
+
+  </article>
+
+</main>
+
+<footer class="border-t bg-white mt-8">
+  <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">
+    &copy; AIプロンプトレシピ
+  </div>
+</footer>
+
+</body>
+
+</html>
