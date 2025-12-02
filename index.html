@@ -2,16 +2,14 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>AIプロンプトレシピ - 静的版</title>
+<title>AIプロンプトレシピ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body { background:#f7f7f7; font-family: sans-serif; }
+body { background:#f7f7f7; }
 
-/* 広告の出し分け */
+/* PC/SP広告切り替え */
 .ad-desktop { display:block; text-align:center; margin:20px 0; }
 .ad-mobile { display:none; text-align:center; margin:20px 0; }
 @media (max-width:768px){
@@ -20,10 +18,13 @@ body { background:#f7f7f7; font-family: sans-serif; }
 }
 
 .recipe-card {
-    box-shadow:0 4px 6px rgba(0,0,0,0.1);
-    transition:.2s;
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.08);
+  transition:.2s;
 }
-.recipe-card:hover { transform:translateY(-2px); }
+.recipe-card:hover { transform:translateY(-3px); }
 </style>
 
 </head>
@@ -32,50 +33,91 @@ body { background:#f7f7f7; font-family: sans-serif; }
 <header class="bg-white shadow">
   <div class="max-w-5xl mx-auto p-4">
     <h1 class="text-3xl font-bold">AIプロンプトレシピ</h1>
-    <p class="text-gray-500 text-sm">静的バージョン（高速 & SEO 最適）</p>
+    <p class="text-gray-500 text-sm">静的バージョン（高速・SEO最適）</p>
   </div>
 </header>
 
-<main class="max-w-5xl mx-auto p-4">
+<main class="max-w-5xl mx-auto p-4 pb-10">
 
-<!-- ▼ PC広告 -->
-<div class="ad-desktop">
-  （広告タグ）
+<!-- ▼ 広告ブロック -->
+<div class="my-6 text-center">
+  <div class="ad-desktop">
+    <a href="https://px.a8.net/svt/ejp?a8mat=45K4X6+4HXXBM+50+7S05SX" target="_blank" rel="nofollow noopener">
+      <img width="728" height="90" src="https://www24.a8.net/svt/bgt?aid=251202282272&wid=001&eno=01&mid=s00000000018047030000&mc=1">
+    </a>
+  </div>
+
+  <div class="ad-mobile">
+    <a href="https://px.a8.net/svt/ejp?a8mat=45K4X6+4HXXBM+50+7S2AYP" target="_blank" rel="nofollow noopener">
+      <img width="300" height="250" src="https://www29.a8.net/svt/bgt?aid=251202282272&wid=001&eno=01&mid=s00000000018047040000&mc=1">
+    </a>
+  </div>
 </div>
-<!-- ▼ スマホ広告 -->
-<div class="ad-mobile">
-  （広告タグ）
-</div>
+<!-- ▲ 広告ブロック -->
 
-<h2 class="text-2xl font-bold mt-8 mb-4">レシピ一覧</h2>
+<h2 class="text-2xl font-bold mb-4">レシピ一覧</h2>
 
-<!-- ▼ レシピ一覧（手動 or 自動生成） -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-  <a href="/recipe-ai/recipes/0000001.html" class="recipe-card bg-white p-5 rounded-lg border">
-    <p class="text-blue-600 text-sm font-semibold">文章生成</p>
-    <h3 class="text-lg font-bold mt-1">0000001：マニュアル作成</h3>
+  <!-- ここから0000001〜0000014を全部入れる -->
+  <a href="recipes/0000001.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">文章生成</p>
+    <h3 class="text-lg font-bold">0000001：マニュアル作成</h3>
   </a>
 
-  <a href="/recipe-ai/recipes/0000002.html" class="recipe-card bg-white p-5 rounded-lg border">
-    <p class="text-blue-600 text-sm font-semibold">文章生成</p>
-    <h3 class="text-lg font-bold mt-1">0000002：文章テンプレ</h3>
+  <a href="recipes/0000002.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">文章生成</p>
+    <h3 class="text-lg font-bold">0000002：文章テンプレ</h3>
   </a>
 
-  <a href="/recipe-ai/recipes/0000003.html" class="recipe-card bg-white p-5 rounded-lg border">
-    <p class="text-blue-600 text-sm font-semibold">文章生成</p>
-    <h3 class="text-lg font-bold mt-1">0000003：文章校正</h3>
+  <a href="recipes/0000003.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">文章生成</p>
+    <h3 class="text-lg font-bold">0000003：文章校正</h3>
   </a>
 
-  <!-- ↓ 以下、0000004〜0000014を追加で書くだけでOK -->
+  <a href="recipes/0000004.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">画像生成</p>
+    <h3 class="text-lg font-bold">0000004：アイキャッチ画像</h3>
+  </a>
 
-</div>
+  <a href="recipes/0000005.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">文章生成</p>
+    <h3 class="text-lg font-bold">0000005：構成テンプレ</h3>
+  </a>
 
-</main>
+  <a href="recipes/0000006.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">SEO</p>
+    <h3 class="text-lg font-bold">0000006：SEO記事生成</h3>
+  </a>
 
-<footer class="bg-white mt-10 p-4 text-center text-gray-400 text-sm">
-  © AIプロンプトレシピ
-</footer>
+  <a href="recipes/0000007.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">文章生成</p>
+    <h3 class="text-lg font-bold">0000007：LP文章生成</h3>
+  </a>
 
-</body>
-</html>
+  <a href="recipes/0000008.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">画像生成</p>
+    <h3 class="text-lg font-bold">0000008：広告バナー</h3>
+  </a>
+
+  <a href="recipes/0000009.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">画像生成</p>
+    <h3 class="text-lg font-bold">0000009：SNSアイコン</h3>
+  </a>
+
+  <a href="recipes/0000010.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">画像生成</p>
+    <h3 class="text-lg font-bold">0000010：オンライン背景</h3>
+  </a>
+
+  <a href="recipes/0000011.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">自動化</p>
+    <h3 class="text-lg font-bold">0000011：メール自動化</h3>
+  </a>
+
+  <a href="recipes/0000012.html" class="recipe-card">
+    <p class="text-blue-600 text-sm">資料作成</p>
+    <h3 class="text-lg font-bold">0000012：資料作成</h3>
+  </a>
+
+  <a href="recipes/0000013.html" class="
