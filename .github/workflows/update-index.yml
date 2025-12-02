@@ -8,6 +8,9 @@ on:
       - "recipes/**"
       - "scripts/**"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
