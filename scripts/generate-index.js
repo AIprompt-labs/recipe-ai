@@ -42,4 +42,10 @@ template = template.replace("{{RECIPES}}", recipeListHTML);
 // ▼ index.html を書き換え
 fs.writeFileSync(OUTPUT_PATH, template, "utf8");
 
-// ▼ レ
+// ▼ レシピタイトルを抜き出す関数
+function getTitle(filePath) {
+  const html = fs.readFileSync(filePath, "utf8");
+
+  const match = html.match(/<h1[^>]*>(.*?)<\/h1>/);
+  return match ? match[1].replace(/【テンプレ】/, "").trim() : "タイトル不明";
+}
