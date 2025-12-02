@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>AIプロンプトレシピ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body { background:#f7f7f7; }
+.recipe-card {
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.08);
+  transition:.2s;
+}
+.recipe-card:hover { transform:translateY(-3px); }
+</style>
+
+</head>
+<body>
+
+<header class="bg-white shadow">
+  <div class="max-w-5xl mx-auto p-4">
+    <h1 class="text-3xl font-bold">AIプロンプトレシピ</h1>
+    <p class="text-gray-500 text-sm">静的バージョン（自動生成対応）</p>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto p-4 pb-10">
+
+<!-- ▼ 広告ブロック（必要なら手動で調整） -->
+<div class="my-6 text-center">
+  （広告タグ）
+</div>
+<!-- ▲ 広告ブロック -->
+
+<h2 class="text-2xl font-bold mb-4">レシピ一覧</h2>
+
+<!-- ▼ ここに recipes/*.html から自動生成される -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+{{RECIPES}}
+</div>
+<!-- ▲ 自動生成部分 -->
+
+</main>
+
+<footer class="text-center text-gray-400 text-sm p-6">
+  © AIプロンプトレシピ
+</footer>
+
+</body>
+</html>
