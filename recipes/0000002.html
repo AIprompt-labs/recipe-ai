@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>料理レシピを自動生成するプロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+  <header class="border-b bg-white">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+      <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">文章生成</span></span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+    <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm text-gray-600">
+      広告枠（ここにA8やバリューコマースのタグを後から貼り付け）
+    </div>
+
+    <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+      <header class="space-y-2">
+        <p class="text-xs text-gray-500">レシピID: recipe-0002</p>
+        <h1 class="text-2xl font-bold">【料理レシピ】初心者でも作れる美味しいレシピを自動生成</h1>
+        <p class="text-sm text-gray-600">② 目的：料理ジャンル・人数・材料などを入力すると、初心者でも作れる分かりやすいレシピを生成する。</p>
+      </header>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">
+          ③ {料理ジャンル} {材料リスト} {人数} {調理時間} {味の方向性} {アレルギー} {料理レベル}
+        </h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>例）{和食 / 洋食 / 中華など}</li>
+          <li>例）{材料の名前・量}</li>
+          <li>例）{2人前・4人前}</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">
+          ④ あなたは「プロの料理家」です。以下の条件に従って、分かりやすい料理レシピを作成してください。  
+          ▼条件  
+          - 料理ジャンル：{料理ジャンル}  
+          - 材料：{材料リスト}  
+          - 人数：{人数}  
+          - 調理時間：{調理時間}  
+          - 味の方向性：{味の方向性}  
+          - アレルギー：{アレルギー}  
+
+          ▼出力構成  
+          1. 料理名  
+          2. 概要（どんな料理か）  
+          3. 材料（分量つき）  
+          4. 手順（目的・注意点つき）  
+          5. コツ・ポイント  
+          6. アレンジ例  
+          7. 作り置きの可否  
+
+          ▼出力フォーマット  
+          - 見出しは「# / ##」を使用  
+          - 必ず初心者向けに丁寧に  
+        </h2>
+
+        <p class="text-xs text-gray-500 mb-1">
+          ※ 変数は <code>{ }</code> で囲んでください
+        </p>
+
+        <pre class="bg-gray-900 text-gray-100 text-xs md:text-sm p-4 rounded-lg overflow-x-auto">
+<code>
+【指示】
+以下の条件で、初心者でも作れる料理レシピを考案してください。
+
+【料理ジャンル】{料理ジャンル}
+【材料】{材料リスト}
+【人数】{人数}
+【調理時間】{調理時間}
+【味の方向性】{味の方向性}
+【アレルギー】{アレルギー}
+
+【出力形式】
+①料理名
+②概要
+③材料（分量つき）
+④手順（目的・注意点つき）
+⑤コツ
+⑥アレンジ
+⑦保存方法
+</code>
+</pre>
+
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑤ ChatGPT（GPT-4 以上） / Gemini などレシピ生成に最適なモデル</h2>
+        <p class="text-sm text-gray-700">例）Gemini 1.5 Pro / GPT-4o</p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑥ 使い方のポイント（コツ）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>材料を具体的に書くと正確なレシピになる</li>
+          <li>味の方向性で好みに寄せられる</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑦ 成果物（生成例）</h2>
+        <pre class="bg-gray-50 text-gray-800 text-xs md:text-sm p-4 rounded-lg overflow-x-auto">
+<code>
+「鶏むね肉のやわらか甘辛炒め」
+「サーモンのレモンバターソテー」
+</code>
+</pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑧ 注意点（失敗しやすいポイント）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>材料量を曖昧に書くと不正確なレシピになる</li>
+          <li>アレルギー条件は必ず明記すること</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2 border-t pt-4">
+        <h2 class="text-lg font-semibold">つくレポ</h2>
+        <p class="text-sm text-gray-600">※ 将来のユーザー投稿で使われるエリア</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="border-t bg-white mt-8">
+    <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">
+      &copy; AIプロンプトレシピ
+    </div>
+  </footer>
+</body>
+
+</html>
