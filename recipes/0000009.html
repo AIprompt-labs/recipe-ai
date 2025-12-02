@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>SNSアイコンを自動生成するプロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <header class="border-b bg-white">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+      <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">デザイン生成</span></span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm text-gray-600">
+      広告枠（ここにA8やバリューコマースのタグを後から貼り付け）
+    </div>
+
+    <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+      <header class="space-y-2">
+        <p class="text-xs text-gray-500">レシピID: snsicon-0001</p>
+        <h1 class="text-2xl font-bold">【テンプレ】SNSアイコンを自動生成するプロンプト</h1>
+        <p class="text-sm text-gray-600">② 目的：SNS用のプロフィールアイコンを、統一されたテイストで簡単に作成する。</p>
+      </header>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">③ {アイコンの種類（イラスト/写真風/アニメ風など）} {デザインテイスト} {人物の特徴や雰囲気} {使用SNS（Instagram / X / LINE など）} {背景の有無・色} {表情の希望}</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>例）{人物の年齢・性別・スタイル}</li>
+          <li>例）{イメージカラー}</li>
+          <li>例）{用途：SNSプロフィール・名刺・LP掲載 など}</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">④ あなたは「SNSアイコン専門デザイナー」です。以下の条件に従ってSNSアイコン生成の指示文を作ってください。<br>▼アイコン条件<br>・種類：{アイコンの種類}<br>・デザインテイスト：{デザインテイスト}<br>・人物特徴：{人物の特徴や雰囲気}<br>・使用SNS：{使用SNS}<br>・背景設定：{背景の有無・色}<br><br>▼出力構成<br>1. 全体コンセプト（先に結論）<br>2. 描写する人物の特徴まとめ（箇条書き）<br>3. 表情・雰囲気の指定<br>4. 配色（イメージカラーを含む）<br>5. 背景のデザイン案（3案）<br>6. 仕上がりのテイスト説明<br>7. 画像生成AIに投げる「完成プロンプト」<br><br>▼出力フォーマット<br>・Markdown形式で「# / ## / ###」を利用<br>・文体は「{文体}」で統一<br>・初心者でも理解できる説明にする</h2>
+        <p class="text-xs text-gray-500 mb-1">※ ユーザーが書き換える可変部分は <code>{ }</code> で囲んでください</p>
+        <pre class="bg-gray-900 text-gray-100 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>ここにプロンプト本文</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑤ ChatGPT（GPT-4 以上） / 画像生成AI</h2>
+        <p class="text-sm text-gray-700">例）Midjourney、Stable Diffusion、Canva AI など</p>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑥ 使い方のポイント（コツ）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>人物像の情報をできるだけ具体的に伝えると精度が上がる</li>
+          <li>背景を「単色・ぼかし・円形グラデ」など細かく指定すると綺麗に仕上がる</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑦ 成果物（生成物の例）</h2>
+        <pre class="bg-gray-50 text-gray-800 text-xs md:text-sm p-4 rounded-lg overflow-x-auto"><code>「Instagram用：やさしい雰囲気の手描き風アイコン」
+「X用：クール系アニメタッチのプロフィール画像」</code></pre>
+      </section>
+
+      <section class="space-y-2">
+        <h2 class="text-lg font-semibold">⑧ 注意点（失敗しやすいポイント）</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          <li>人物の特徴を曖昧にすると、想定外の見た目になる</li>
+          <li>背景がごちゃつくとアイコンとして視認性が下がる</li>
+        </ul>
+      </section>
+
+      <section class="space-y-2 border-t pt-4">
+        <h2 class="text-lg font-semibold">つくレポ</h2>
+        <p class="text-sm text-gray-600">※ 将来の会員投稿機能で、実際に使った人のフィードバックを載せるエリア</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="border-t bg-white mt-8">
+    <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">&copy; AIプロンプトレシピ</div>
+  </footer>
+</body>
+</html>
