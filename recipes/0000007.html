@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>自画像（AIアバター）生成プロンプト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+<header class="border-b bg-white">
+  <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="../index.html" class="text-lg font-bold">AIプロンプトレシピ</a>
+    <span class="text-xs text-gray-500">ジャンル: <span class="font-semibold">画像生成</span></span>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+  <div class="ad-area w-full bg-gray-200 border border-dashed border-gray-400 rounded-lg p-4 text-center text-sm">
+    広告枠
+  </div>
+
+  <article class="bg-white rounded-2xl shadow p-6 space-y-6">
+
+    <header>
+      <p class="text-xs text-gray-500">レシピID: recipe-0008</p>
+      <h1 class="text-2xl font-bold">【AIアバター】本人に寄せた自画像を生成する</h1>
+      <p class="text-sm text-gray-600">② 目的：SNS用アイコン・自己紹介ページ用の自画像を簡単に作る。</p>
+    </header>
+
+    <section>
+      <h2 class="text-lg font-semibold">
+        ③ {性別} {年齢} {髪型} {表情} {服装} {イメージ} {背景}
+      </h2>
+      <ul class="list-disc text-sm">
+        <li>例）{優しい雰囲気 / クール / ふんわりしたイラスト調など}</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">
+        ④ あなたは「ポートレート専門のAI画像クリエイター」です。  
+        以下の情報にもとづき、本人に寄せたアバター画像を生成するプロンプトを作成してください。
+
+        ▼入力情報  
+        - 性別：{性別}  
+        - 年齢：{年齢}  
+        - 髪型：{髪型}  
+        - 表情：{表情}  
+        - 服装：{服装}  
+        - イメージ：{イメージ}  
+        - 背景：{背景}
+
+        ▼出力  
+        - 画像生成プロンプト（Midjourney向け）
+      </h2>
+
+<pre class="bg-gray-900 text-gray-100 text-xs p-4 rounded-lg overflow-auto"><code>
+【指示】
+以下の条件で本人に寄せた自画像アバターを生成するプロンプトを書いてください。
+
+【性別】{性別}
+【年齢】{年齢}
+【髪型】{髪型}
+【表情】{表情}
+【服装】{服装}
+【イメージ】{イメージ}
+【背景】{背景}
+
+【出力】
+Midjourney向けのプロンプト（被写体・質感・画角・背景など詳細）
+</code></pre>
+
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑤ 使用モデル</h2>
+      <p class="text-sm">Midjourney / DALL·E（画像生成用）</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑥ コツ</h2>
+      <ul class="list-disc text-sm">
+        <li>特徴は3つまでに絞ると安定する</li>
+        <li>背景を統一するとプロフィールとして使いやすい</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑦ 例</h2>
+<pre class="bg-gray-50 p-4 text-xs rounded"><code>
+「柔らかい光の中でほほえむ女性のポートレート（イラスト調）」
+</code></pre>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold">⑧ 注意点</h2>
+      <ul class="list-disc text-sm">
+        <li>写真風にするか絵柄にするか先に決める</li>
+        <li>実写系はディテールの指定が重要</li>
+      </ul>
+    </section>
+
+    <section class="border-t pt-4">
+      <h2 class="text-lg font-semibold">つくレポ</h2>
+      <p class="text-sm">※投稿予定</p>
+    </section>
+
+  </article>
+
+</main>
+
+<footer class="border-t bg-white mt-8">
+  <div class="max-w-4xl mx-auto px-4 py-4 text-xs text-gray-500">
+    &copy; AIプロンプトレシピ
+  </div>
+</footer>
+
+</body>
+
+</html>
