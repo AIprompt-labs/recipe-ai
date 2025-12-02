@@ -16,6 +16,29 @@ body { background:#f7f7f7; }
   transition:.2s;
 }
 .recipe-card:hover { transform:translateY(-3px); }
+
+/* --- 広告の出し分け設定 --- */
+.ad-desktop {
+  display: block;
+  text-align: center;
+  margin: 20px 0;
+}
+.ad-mobile {
+  display: none;
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* 画面幅 768px 以下（スマホ）なら SP 広告だけ表示 */
+@media (max-width: 768px) {
+  .ad-desktop {
+    display: none;
+  }
+  .ad-mobile {
+    display: block;
+  }
+}
+/* --- 広告の出し分け設定 --- */
 </style>
 
 </head>
@@ -30,19 +53,33 @@ body { background:#f7f7f7; }
 
 <main class="max-w-5xl mx-auto p-4 pb-10">
 
-<!-- ▼ 広告ブロック（必要なら手動で調整） -->
-<div class="my-6 text-center">
-  （広告タグ）
-</div>
-<!-- ▲ 広告ブロック -->
+  <!-- ▼▼ 広告：PC / SP 出し分け ▼▼ -->
 
-<h2 class="text-2xl font-bold mb-4">レシピ一覧</h2>
+  <!-- PC用広告（728×90） -->
+  <div class="ad-desktop">
+    <a href="https://px.a8.net/svt/ejp?a8mat=45K4X6+4HXXBM+50+7S05SX" rel="noopener noreferrer nofollow" target="_blank">
+      <img border="0" width="728" height="90" alt="" src="https://www24.a8.net/svt/bgt?aid=251202282272&wid=001&eno=01&mid=s00000000018047030000&mc=1">
+    </a>
+    <img border="0" width="1" height="1" src="https://www16.a8.net/0.gif?a8mat=45K4X6+4HXXBM+50+7S05SX" alt="">
+  </div>
 
-<!-- ▼ ここに recipes/*.html から自動生成される -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-{{RECIPES}}
-</div>
-<!-- ▲ 自動生成部分 -->
+  <!-- スマホ用広告（300×250） -->
+  <div class="ad-mobile">
+    <a href="https://px.a8.net/svt/ejp?a8mat=45K4X6+4HXXBM+50+7S2AYP" rel="nofollow noopener noreferrer" target="_blank">
+      <img border="0" width="300" height="250" alt="" src="https://www29.a8.net/svt/bgt?aid=251202282272&wid=001&eno=01&mid=s00000000018047040000&mc=1">
+    </a>
+    <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=45K4X6+4HXXBM+50+7S2AYP" alt="">
+  </div>
+
+  <!-- ▲▲ 広告：PC / SP 出し分け ▲▲ -->
+
+  <h2 class="text-2xl font-bold mb-4">レシピ一覧</h2>
+
+  <!-- ▼ ここに recipes/*.html から自動生成される -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {{RECIPES}}
+  </div>
+  <!-- ▲ 自動生成部分 -->
 
 </main>
 
